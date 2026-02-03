@@ -11,10 +11,10 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173"
+    failureRedirect: "https://event-scraping-application-xccz.vercel.app/"
   }),
   (req, res) => {
-   res.redirect("http://localhost:5173/admin/dashboard");
+   res.redirect("https://event-scraping-application-xccz.vercel.app/admin/dashboard");
 
   }
 );
