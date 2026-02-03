@@ -35,10 +35,11 @@ function AdminLogin() {
 
         {/* Login Button */}
         <div className="space-y-4">
-          <a 
-            href="http://localhost:5000/auth/google" 
-            className="block group"
-          >
+          <a
+  href={`${import.meta.env.VITE_API_BASE_URL}/auth/google`}
+  className="block group"
+>
+
             <button className="w-full bg-gray-900 hover:bg-black text-white font-bold py-5 px-8 rounded-2xl transition-all flex items-center justify-between shadow-xl shadow-gray-200 group-hover:shadow-gray-300 active:scale-[0.98]">
               <div className="flex items-center gap-4">
                 <div className="bg-white p-1.5 rounded-lg">

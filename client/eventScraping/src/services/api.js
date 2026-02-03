@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://eventhub-backend-9oo5.onrender.com",
-  withCredentials: true
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
 });
 
 export default api;

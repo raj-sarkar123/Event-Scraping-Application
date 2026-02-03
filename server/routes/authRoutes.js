@@ -3,29 +3,34 @@ import passport from "passport";
 
 const router = express.Router();
 
+/* ================= GOOGLE LOGIN ================= */
 router.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
 );
 
+/* ================= GOOGLE CALLBACK ================= */
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "https://event-scraping-application-xccz.vercel.app/"
+    failureRedirect: `${process.env.CLIENT_URL}/`,
   }),
   (req, res) => {
-   res.redirect("https://event-scraping-application-xccz.vercel.app/admin/dashboard");
-
+    res.redirect(`${process.env.CLIENT_URL}/admin/dashboard`);
   }
 );
 
+/* ================= CURRENT USER ================= */
 router.get("/me", (req, res) => {
   res.json(req.user || null);
 });
 
+/* ================= LOGOUT ================= */
 router.get("/logout", (req, res) => {
   req.logout(() => {
-    res.json({ message: "Logged out" });
+    res.redirect(process.env.CLIENT_URL);
   });
 });
 
