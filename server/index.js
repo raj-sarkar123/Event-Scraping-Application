@@ -1,3 +1,4 @@
+import scrapeRoutes from "./routes/scrapeRoutes.js";
 
 import express from "express";
 import mongoose from "mongoose";
@@ -11,6 +12,8 @@ import "./cron/scrapeJob.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import leadRoutes from "./routes/leadRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+
+
 
 const app = express();
 
@@ -33,6 +36,8 @@ app.use(passport.session());
 app.use("/events", eventRoutes);
 app.use("/lead", leadRoutes);
 app.use("/auth", authRoutes);
+app.use("/scrape", scrapeRoutes);
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {

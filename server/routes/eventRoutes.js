@@ -5,20 +5,42 @@ import requireAdmin from "../middlewares/requireAdmin.js";
 const router = express.Router();
 
 /* =========================
-   PUBLIC EVENTS (approved)
+   PUBLIC EVENTS (LIVE SITE)
+========================= */
+/* =========================
+   PUBLIC EVENTS (LIVE SITE)
 ========================= */
 router.get("/", async (req, res) => {
-  const events = await event.find({ status: "imported" });
-  res.json(events);
+  try {
+    const events = await event.find(
+      { status: { $in: ["imported", "updated"] } },
+      {
+        title: 1,
+        venue: 1,
+        dateTime: 1,
+        imageUrl: 1,
+        source: 1,
+        eventUrl: 1
+      }
+    ).sort({ dateTime: 1 });
+
+    res.json(events);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch events" });
+  }
 });
+
 
 /* =========================
    ADMIN EVENTS (ADMINS ONLY)
 ========================= */
 router.get("/admin", requireAdmin, async (req, res) => {
-  const events = await event.find({
-    status: { $in: ["new", "imported", "inactive", "updated"] }
-  }).sort({ lastScrapedAt: -1 });
+  const events = await event
+    .find({
+      status: { $in: ["new", "imported", "inactive", "updated"] }
+    })
+    .sort({ lastScrapedAt: -1 });
 
   res.json(events);
 });

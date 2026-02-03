@@ -1,59 +1,50 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import event from "../models/event.js";
 
-export const scrapeEventbrite = async () => {
-  console.log("🔍 Scraper started...");
+export async function scrapeEventbrite() {
+  try {
+    const url =
+      "https://www.eventbrite.com/d/australia--sydney/events/";
 
-  const url = "https://www.eventbrite.com/d/australia--sydney/events/";
-  const { data } = await axios.get(url);
-  const $ = cheerio.load(data);
+    const { data } = await axios.get(url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      }
+    });
 
-  const scrapedUrls = [];
+    const $ = cheerio.load(data);
+    const events = [];
 
-  const eventPromises = [];
+    $("a[href*='/e/']").each((_, el) => {
+      const title = $(el).find("h3").text().trim();
+      let eventUrl = $(el).attr("href");
 
-  $('a[data-event-id]').each((_, el) => {
-    const href = $(el).attr("href");
-    const title = $(el).find("h3").text().trim();
+      if (!title || !eventUrl) return;
 
-    if (!href || !title) return;
+      if (!eventUrl.startsWith("http")) {
+        eventUrl = `https://www.eventbrite.com${eventUrl}`;
+      }
 
-    const eventUrl = href.startsWith("http")
-      ? href
-      : `https://www.eventbrite.com${href}`;
+      const image =
+        $(el).find("img").attr("src") ||
+        $(el).find("img").attr("data-src") ||
+        null;
 
-    scrapedUrls.push(eventUrl);
+      events.push({
+        title,
+        venue: "Sydney",
+        date: null,
+        image,
+        eventUrl,
+        source: "eventbrite"
+      });
+    });
 
-    console.log("Found event:", title);
-
-    eventPromises.push(
-      event.updateOne(
-        { eventUrl },
-        {
-          $setOnInsert: {
-            title,
-            city: "Sydney",
-            source: "Eventbrite",
-            eventUrl,
-            status: "new",
-            lastScrapedAt: new Date()
-          }
-        },
-        { upsert: true }
-      )
-    );
-  });
-
-  await Promise.all(eventPromises);
-
-  // mark inactive
-  if (scrapedUrls.length > 0) {
-    await event.updateMany(
-      { eventUrl: { $nin: scrapedUrls } },
-      { status: "inactive" }
-    );
+    console.log("Eventbrite scraped:", events.length);
+    return events;
+  } catch (err) {
+    console.error("Eventbrite failed:", err.message);
+    return []; // 🔑 IMPORTANT
   }
-
-  console.log("✅ Eventbrite scraping done");
-};
+}

@@ -14,7 +14,8 @@ router.get(
     failureRedirect: "http://localhost:5173"
   }),
   (req, res) => {
-    res.redirect("http://localhost:5173/dashboard");
+   res.redirect("http://localhost:5173/admin/dashboard");
+
   }
 );
 
