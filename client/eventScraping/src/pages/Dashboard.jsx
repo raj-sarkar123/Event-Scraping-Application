@@ -130,12 +130,20 @@ function Dashboard() {
           <p className="text-gray-500 mb-10 text-lg leading-relaxed">
             Authorized personnel only. Please sign in to manage Sydney's event pipeline.
           </p>
-          <a href="http://localhost:5000/auth/google" className="block transform transition active:scale-95">
-            <button className="w-full bg-gray-900 hover:bg-black text-white font-bold py-5 px-6 rounded-2xl transition-all flex items-center justify-center gap-4 shadow-xl">
-              <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-6 h-6" alt="G" />
-              Sign in with Google
-            </button>
-          </a>
+          <a
+  href={`${import.meta.env.VITE_API_BASE_URL}/auth/google`}
+  className="block transform transition active:scale-95"
+>
+  <button className="w-full bg-gray-900 hover:bg-black text-white font-bold py-5 px-6 rounded-2xl transition-all flex items-center justify-center gap-4 shadow-xl">
+    <img
+      src="https://www.svgrepo.com/show/355037/google.svg"
+      className="w-6 h-6"
+      alt="G"
+    />
+    Sign in with Google
+  </button>
+</a>
+
         </div>
       </div>
     );
