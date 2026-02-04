@@ -10,7 +10,7 @@ function AdminLogin() {
         <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-indigo-50 rounded-full blur-3xl opacity-50" />
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -30,16 +30,16 @@ function AdminLogin() {
         </h2>
 
         <p className="text-gray-500 mb-10 text-lg leading-relaxed font-medium">
-          Welcome back. Please authenticate with your corporate account to manage the Sydney Event pipeline.
+          Welcome back. Please authenticate with your corporate account to
+          manage the Sydney Event pipeline.
         </p>
 
         {/* Login Button */}
         <div className="space-y-4">
           <a
-  href={`${import.meta.env.VITE_API_BASE_URL}/auth/google`}
-  className="block group"
->
-
+            href={`${import.meta.env.VITE_API_BASE_URL}/auth/google`}
+            className="block group"
+          >
             <button className="w-full bg-gray-900 hover:bg-black text-white font-bold py-5 px-8 rounded-2xl transition-all flex items-center justify-between shadow-xl shadow-gray-200 group-hover:shadow-gray-300 active:scale-[0.98]">
               <div className="flex items-center gap-4">
                 <div className="bg-white p-1.5 rounded-lg">
@@ -54,17 +54,22 @@ function AdminLogin() {
               <ArrowRight className="size-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
             </button>
           </a>
-          
+
           <p className="text-xs text-gray-400 font-medium pt-4">
-            By signing in, you agree to our <span className="underline cursor-pointer hover:text-gray-600">Terms of Service</span>
+            By signing in, you agree to our{" "}
+            <span className="underline cursor-pointer hover:text-gray-600">
+              Terms of Service
+            </span>
           </p>
         </div>
       </motion.div>
-      
+
       {/* Footer Brand */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-20">
         <Zap className="size-4 fill-current" />
-        <span className="font-black tracking-tighter text-sm uppercase">EventHub Terminal</span>
+        <span className="font-black tracking-tighter text-sm uppercase">
+          EventHub Terminal
+        </span>
       </div>
     </div>
   );

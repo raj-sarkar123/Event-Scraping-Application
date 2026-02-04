@@ -15,12 +15,13 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `${process.env.CLIENT_URL}/`,
+    failureRedirect: `${process.env.CLIENT_URL}/admin/login`,
   }),
   (req, res) => {
     res.redirect(`${process.env.CLIENT_URL}/admin/dashboard`);
   }
 );
+
 
 /* ================= CURRENT USER ================= */
 router.get("/me", (req, res) => {
