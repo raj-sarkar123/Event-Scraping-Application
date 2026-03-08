@@ -15,7 +15,11 @@ router.get("/", async (req, res) => {
     const events = await event.find(
       {
         status: { $in: ["imported", "updated"] },
-        dateTime: { $gte: new Date() }
+        $or: [
+          { dateTime: { $gte: new Date() } },
+          { dateTime: null },
+          { dateTime: { $exists: false } }
+        ]
       },
       {
         title: 1,
