@@ -16,30 +16,46 @@ export async function scrapeEventbrite() {
     const $ = cheerio.load(data);
     const events = [];
 
-    $("a[href*='/e/']").each((_, el) => {
-      const title = $(el).find("h3").text().trim();
-      let eventUrl = $(el).attr("href");
+    const eventMap = new Map();
 
-      if (!title || !eventUrl) return;
+    $("a[href*='/e/']").each((_, el) => {
+      let eventUrl = $(el).attr("href");
+      if (!eventUrl) return;
 
       if (!eventUrl.startsWith("http")) {
         eventUrl = `https://www.eventbrite.com${eventUrl}`;
       }
 
+      // Strip query parameters for correct grouping
+      eventUrl = eventUrl.split("?")[0];
+
+      const title = $(el).find("h3").text().trim();
       const image =
         $(el).find("img").attr("src") ||
         $(el).find("img").attr("data-src") ||
         null;
 
-      events.push({
-        title,
-        venue: "Sydney",
-        date: null,
-        image,
-        eventUrl,
-        source: "eventbrite"
-      });
+      if (!eventMap.has(eventUrl)) {
+        eventMap.set(eventUrl, { title: null, image: null, eventUrl });
+      }
+
+      const existing = eventMap.get(eventUrl);
+      if (title) existing.title = title;
+      if (image) existing.image = image;
     });
+
+    for (const data of eventMap.values()) {
+      if (data.title) {
+        events.push({
+          title: data.title,
+          venue: "Sydney",
+          date: null,
+          image: data.image,
+          eventUrl: data.eventUrl,
+          source: "eventbrite"
+        });
+      }
+    }
 
     console.log("Eventbrite scraped:", events.length);
     return events;
